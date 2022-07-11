@@ -8,17 +8,16 @@ import ru.bpdu.PP_3_1_1_spring_boot_crud.entity.User;
 import ru.bpdu.PP_3_1_1_spring_boot_crud.service.UserService;
 
 @Controller
-@RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userServiceImpl;
 
-    public UserController(UserService userService) { this.userService = userService; }
+    public UserController(UserService userServiceImpl) { this.userServiceImpl = userServiceImpl; }
 
-    @GetMapping(value="/list")
+    @GetMapping(value="/users")
     public String showUsers(Model model) {
-        model.addAttribute("users", userService.getUserList());
+        model.addAttribute("users", userServiceImpl.getUserList());
         return("users");
     }
 
@@ -29,26 +28,26 @@ public class UserController {
 
     @PostMapping(value="/create")
     public String createUser(User user) {
-        userService.addUser(user);
+        userServiceImpl.addUser(user);
         return "redirect:/users";
     }
 
     @GetMapping(value = "/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        userService.deleteUser(id);
+        userServiceImpl.deleteUser(id);
         return("redirect:/users");
     }
 
     @GetMapping(value="/update/{id}")
     public String updateUserRedirect(@PathVariable("id") long id, Model model) {
-        User user = userService.getUser(id);
+        User user = userServiceImpl.getUser(id);
         model.addAttribute("user", user);
         return "update";
     }
 
     @PostMapping(value="/update")
     public String updateUser(User user) {
-        userService.updateUser(user.getId(), user.getName(), user.getEmail(), user.getAge());
+        userServiceImpl.updateUser(user.getId(), user.getName(), user.getEmail(), user.getAge());
         return "redirect:/users";
     }
 }
