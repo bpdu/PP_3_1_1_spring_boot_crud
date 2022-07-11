@@ -26,10 +26,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id, String name, String email, Integer age) {
-
+        User user = userRepository.getReferenceById(id);
+        user.setName(name);
+        user.setEmail(email);
+        user.setAge(age);
+        userRepository.save(user);
     }
 
     @Override
-    public List<User> getUserList() { return userRepository.;
-    }
+    public List<User> getUserList() { return userRepository.findAll(); }
+
 }
